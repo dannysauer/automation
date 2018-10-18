@@ -153,7 +153,7 @@ resource "libvirt_volume" "admin" {
   base_volume_id = "${libvirt_volume.img.id}"
 }
 
-resource "libvirt_cloudinit" "admin" {
+resource "libvirt_cloudinit_disk" "admin" {
   name      = "${var.name_prefix}admin_cloud_init.iso"
   pool      = "${var.pool}"
   user_data = "${file("cloud-init/admin.cfg")}"
@@ -164,7 +164,7 @@ resource "libvirt_domain" "admin" {
   memory    = "${var.admin_memory}"
   vcpu      = "${var.admin_vcpu}"
   metadata  = "admin.${var.domain_name},admin,${count.index}"
-  cloudinit = "${libvirt_cloudinit.admin.id}"
+  cloudinit = "${libvirt_cloudinit_disk.admin.id}"
 
   cpu {
     mode = "host-passthrough"
@@ -280,7 +280,7 @@ data "template_file" "master_cloud_init_user_data" {
   depends_on = ["libvirt_domain.admin"]
 }
 
-resource "libvirt_cloudinit" "master" {
+resource "libvirt_cloudinit_disk" "master" {
   # needed when 0 master nodes are defined
   count     = "${var.master_count}"
   name      = "${var.name_prefix}master_cloud_init_${count.index}.iso"
@@ -293,7 +293,7 @@ resource "libvirt_domain" "master" {
   name       = "${var.name_prefix}master_${count.index}"
   memory     = "${var.master_memory}"
   vcpu       = "${var.master_vcpu}"
-  cloudinit  = "${element(libvirt_cloudinit.master.*.id, count.index)}"
+  cloudinit  = "${element(libvirt_cloudinit_disk.master.*.id, count.index)}"
   metadata   = "master-${count.index}.${var.domain_name},master,${count.index},${var.name_prefix}"
   depends_on = ["libvirt_domain.admin"]
 
@@ -383,7 +383,7 @@ data "template_file" "worker_cloud_init_user_data" {
   depends_on = ["libvirt_domain.admin"]
 }
 
-resource "libvirt_cloudinit" "worker" {
+resource "libvirt_cloudinit_disk" "worker" {
   # needed when 0 worker nodes are defined
   count     = "${var.worker_count}"
   name      = "${var.name_prefix}worker_cloud_init_${count.index}.iso"
@@ -396,7 +396,7 @@ resource "libvirt_domain" "worker" {
   name       = "${var.name_prefix}worker_${count.index}"
   memory     = "${var.worker_memory}"
   vcpu       = "${var.worker_vcpu}"
-  cloudinit  = "${element(libvirt_cloudinit.worker.*.id, count.index)}"
+  cloudinit  = "${element(libvirt_cloudinit_disk.worker.*.id, count.index)}"
   metadata   = "worker-${count.index}.${var.domain_name},worker,${count.index},${var.name_prefix}"
   depends_on = ["libvirt_domain.admin"]
 
