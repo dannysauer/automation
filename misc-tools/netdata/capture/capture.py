@@ -7,8 +7,6 @@ import json
 import logging
 import os.path
 import re
-import shutil
-import time
 
 import pygal
 import requests
@@ -40,7 +38,7 @@ def list_charts(ipaddr):
 
 def render_to_file(name, data, args):
     chart = pygal.Line(show_dots=False, height=args.height, width=args.width,
-            explicit_size=True)
+                       explicit_size=True)
     chart.title = name
     # very slow:   chart.interpolate = "cubic"
     chart.x_labels = data["labels"][1:]
@@ -73,6 +71,7 @@ def generate_charts(ipaddr, chart_names, timedelta, args):
             j = r.json()
             render_to_file(cn, j, args)
 
+
 def fetch_chart_data(ipaddr, chart_names, timedelta, args):
     url_tpl = 'http://{}:19999/api/v1/data?chart={}&after=-{}&format=datasource&options=nonzero'
     for cn in chart_names:
@@ -82,6 +81,7 @@ def fetch_chart_data(ipaddr, chart_names, timedelta, args):
             path = os.path.join(args.outdir, "data", cn + ".datasource")
             with open(path, 'wb') as f:
                 f.write(r.content)
+
 
 def fetch_badges(ipaddr, chart_names, timedelta, args):
     url_tpl = "http://{}:19999/api/v1/badge.svg?chart={}&after=-{}"
@@ -120,9 +120,9 @@ def main():
     ap = argparse.ArgumentParser(description='Capture Netdata charts')
     ap.add_argument('target', choices=["admin", "master"], help="Target host")
     ap.add_argument('--env-json-path', default='./environment.json',
-            help="environment.json full path")
+                    help="environment.json full path")
     ap.add_argument('--timedelta', default='30minutes',
-            help='Chart time: <numbers>[hours|minutes|seconds]')
+                    help='Chart time: <numbers>[hours|minutes|seconds]')
     ap.add_argument('--height', type=int, default=300)
     ap.add_argument('--width', type=int, default=1200)
     ap.add_argument('--outdir', default='.', help='output directory')
@@ -153,8 +153,6 @@ def main():
     generate_charts_index(chart_names, td, args)
     fetch_badges(ipaddr, chart_names, td, args)
     fetch_chart_data(ipaddr, chart_names, td, args)
-
-
 
 
 if __name__ == "__main__":
