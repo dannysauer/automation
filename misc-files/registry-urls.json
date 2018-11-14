@@ -2,7 +2,7 @@
   "baseurl": {
     "devel": "registry.suse.de/devel/casp/3.0/controllernode/images_container_base",
     "kubic": "registry.opensuse.org/devel/caasp/kubic-container/container/x86_64",
-    "release": "registry.suse.de/suse/sle-12-sp3/update/products/casp30/container",
+    "release": "registry.suse.de/suse/sle-12-sp3/update/products/casp30/containers",
     "staging_a": "registry.suse.de/suse/sle-12-sp3/update/products/casp30/staging/a/container",
     "staging_b": "registry.suse.de/suse/sle-12-sp3/update/products/casp30/staging/b/container"
   },

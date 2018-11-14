@@ -18,16 +18,20 @@ REGISTRY_URLS_JSON=$(realpath $DIR/../../misc-files/registry-urls.json)
 kubic_velum_development_reference() {
   declare BASE_URL
   declare RELATIVE_PATH
+  declare VELUM_NAME=velum
+  if [[ $IMAGE == "channel://devel" ]]; then
+    VELUM_NAME=velum-development
+  fi
   REGISTRY_URL=$(jq -r ".baseurl.${IMAGE:10}" $REGISTRY_URLS_JSON | sed 's/\/x86_64//g')
   IFS="/" read BASE_URL RELATIVE_PATH <<< "$REGISTRY_URL"
 
-  TAGS_URL="https://$BASE_URL/v2/$RELATIVE_PATH/$IMAGE_DIST/velum-development/tags/list"
+  TAGS_URL="https://$BASE_URL/v2/$RELATIVE_PATH/$IMAGE_DIST/$VELUM_NAME/tags/list"
 
   TAGS=$(curl -s $TAGS_URL | jq -r '.tags')
 
   # And getting the first tag
   FIRST_TAG=$(echo $TAGS | jq -r '.[0]')
-  echo $BASE_URL/$RELATIVE_PATH/$IMAGE_DIST/velum-development:${FIRST_TAG}
+  echo "$BASE_URL/$RELATIVE_PATH/$IMAGE_DIST/${VELUM_NAME}:${FIRST_TAG}"
 }
 
 # get distribution
