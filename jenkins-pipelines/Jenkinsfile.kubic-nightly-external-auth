@@ -1,0 +1,38 @@
+def kubicLib = library("kubic-jenkins-library@${env.BRANCH_NAME}").com.suse.kubic
+
+// Configure the build properties
+properties([
+        buildDiscarder(logRotator(numToKeepStr: '31', daysToKeepStr: '31')),
+        disableConcurrentBuilds(),
+        pipelineTriggers([cron('H H(3-5) * * *')]),
+        parameters([
+                booleanParam(name: 'ENVIRONMENT_DESTROY', defaultValue: true, description: 'Destroy env once done?')
+        ]),
+])
+
+def kvmTypeOptions = kubicLib.CaaspKvmTypeOptions.new()
+kvmTypeOptions.vanilla = true
+
+coreKubicProjectPeriodic(
+        environmentTypeOptions: kvmTypeOptions,
+        environmentDestroy: env.ENVIRONMENT_DESTROY.toBoolean(),
+) {
+    // empty preBootstrapBody
+} {
+    stage('Run External Auth Tests') {
+        dir("${WORKSPACE}/automation/external-auth-tests") {
+            parallel 'openLDAP': {
+                try {
+                    timeout(180) {
+                        ansiColor {
+                            sh(script: "tox -e open-ldap")
+                        }
+                    }
+                } finally {
+                    archiveArtifacts(artifacts: "results/**")
+                    junit("results/*.xml")
+                }
+            }
+        }
+    }
+}
