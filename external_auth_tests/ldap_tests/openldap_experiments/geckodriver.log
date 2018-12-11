@@ -1,0 +1,13 @@
+1543971686932	geckodriver	INFO	geckodriver 0.21.0
+1543971686989	geckodriver	INFO	Listening on 127.0.0.1:39565
+1543971687947	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.0zxbEu3Xh8CS"
+*** You are running in headless mode.
+1543971689789	Marionette	INFO	Listening on port 41163
+1543971689920	Marionette	WARN	TLS certificate errors will be ignored for this session
+1543971689959	Marionette	DEBUG	[2147483649] Frame script loaded
+1543971689960	Marionette	DEBUG	[2147483649] Frame script registered
+1543971689970	Marionette	DEBUG	[2147483649] Received DOM event beforeunload for about:blank
+1543971691591	Marionette	DEBUG	[2147483649] Received DOM event pagehide for about:blank
+1543971691705	Marionette	DEBUG	[2147483649] Received DOM event DOMContentLoaded for https://www.google.com/
+1543971692382	Marionette	DEBUG	[2147483649] Received DOM event pageshow for https://www.google.com/
+1543971692388	Marionette	INFO	Stopped listening on port 41163
