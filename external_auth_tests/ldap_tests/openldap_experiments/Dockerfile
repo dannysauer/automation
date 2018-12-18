@@ -10,5 +10,7 @@ RUN zypper --no-refresh install -y \
     geckodriver
 #chromium \
 # install any other python modules?
+RUN zypper --no-refresh install -y \
+    python3-kubernetes
 
 ENTRYPOINT /bin/bash

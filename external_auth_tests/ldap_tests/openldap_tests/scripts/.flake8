@@ -1,0 +1,4 @@
+[flake8]
+ignore=
+  # ignore whitespace-around-parens rule (really, just for print)
+  E201, E202

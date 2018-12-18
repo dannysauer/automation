@@ -1,0 +1,19 @@
+version: '3'
+# usage:
+# docker-compose -f ../open-ldap-server/docker-compose.yml -f docker-compose.yml up
+# (because docker-compose got rid of "extends" in v3)
+
+services:
+
+  testbox:
+    build: .
+    container_name: testbox
+    #image: opensuse/leap:15.0
+    command: sleep infinity
+    networks:
+     #- openldap-test
+     - open-ldap-server_openldap-test
+
+networks:
+  open-ldap-server_openldap-test:
+    external: true

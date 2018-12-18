@@ -1,5 +1,11 @@
 version: '3'
 
+networks:
+  # well-known net for other containers to reach this one
+  openldap-test:
+#    name: "openldap-test"
+#    attachable: true
+
 services:
 
   open-ldap-server:
@@ -27,12 +33,19 @@ services:
       KEEP_EXISTING_CONFIG: "false"
       LDAP_REMOVE_CONFIG_AFTER_SETUP: "false"
       LDAP_SSL_HELPER_PREFIX: "ldap"
-    ports:
-      - "389:389"
-      - "636:636"
+# no ports needed; will only communicate w/ ssh tunnel inside docker network
+#    ports:
+#      - "389:389"
+#      - "636:636"
+    expose:
+      - 389
+      - 636
     domainname: "ldaptest.com" # important: same as hostname
     hostname: "ldaptest.com"
     networks:
+      openldap-test:
+        aliases:
+          - ldaptest.com
       default:
         aliases:
           - ldaptest.com
