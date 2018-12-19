@@ -1,7 +1,5 @@
 version: '3'
-# usage:
-# docker-compose -f ../open-ldap-server/docker-compose.yml -f docker-compose.yml up
-# (because docker-compose got rid of "extends" in v3)
+# note: this expects the open-ldap server to already be docker-compose up'd
 
 services:
 
