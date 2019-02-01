@@ -60,6 +60,7 @@ DIST_PACKAGES="jq \
                git \
                which \
                polkit \
+               polkit-default-privs \
                ca-certificates-suse"
 
 # kubic-project needed repos to clone via https on build(sep by 1 space)
