@@ -1,0 +1,4 @@
+testinfra
+pytest
+paramiko
+pyyaml
