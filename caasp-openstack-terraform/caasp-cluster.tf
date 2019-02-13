@@ -6,6 +6,8 @@ variable "master_size" {}
 variable "masters" {}
 variable "worker_size" {}
 variable "workers" {}
+variable "workers_vol_enabled" {}
+variable "workers_vol_size" {}
 variable "dnsdomain" {}
 variable "dnsentry" {}
 variable "stack_name" {}
@@ -39,6 +41,18 @@ resource "openstack_dns_recordset_v2" "master" {
   type        = "A"
   records     = ["${element(openstack_networking_floatingip_v2.master_ext.*.address, count.index)}"]
   depends_on  = ["openstack_compute_instance_v2.master", "openstack_compute_floatingip_associate_v2.master_ext_ip"]
+}
+
+resource "openstack_blockstorage_volume_v2" "worker_vol" {
+  count = "${var.workers_vol_enabled ? "${var.workers}" : 0 }"
+  size  = "${var.workers_vol_size}"
+  name  = "vol_${element(openstack_compute_instance_v2.worker.*.name, count.index)}"
+}
+
+resource "openstack_compute_volume_attach_v2" "worker_vol_attach" {
+  count = "${var.workers_vol_enabled ? "${var.workers}" : 0 }"
+  instance_id = "${element(openstack_compute_instance_v2.worker.*.id, count.index)}"
+  volume_id   = "${element(openstack_blockstorage_volume_v2.worker_vol.*.id, count.index)}"
 }
 
 data "template_file" "cloud-init" {

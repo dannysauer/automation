@@ -21,6 +21,9 @@ NETWORK=${CAASP_NETWORK:-container-ci}
 PARALLELISM=${CAASP_PARALLELISM:-1}
 CAASP_NAME_PREFIX=${CAASP_NAME_PREFIX:-$(whoami)}
 
+WORKERS_VOL_ENABLED=${CAASP_WORKERS_VOL_ENABLED:-0}
+WORKERS_VOL_SIZE=${CAASP_WORKERS_VOL_SIZE:-5}
+
 TFVARS_FILE=${CAASP_TFVARS_FILE:-}
 
 EXTRA_REPO=${CAASP_EXTRA_REPO:-}
@@ -38,6 +41,11 @@ Usage:
     -w|--workers <INT>               Number of workers to build (Default: CAASP_NUM_WORKERS=$WORKERS)
     -n|--network <STR>               Neutron network for internal communications (Default: CAASP_NETWORK:$NETWORK)
     -i|--image <STR>                 Image to use (Default: CAASP_IMAGE=$IMAGE)
+
+  * Customizing a cluster
+
+    --workers-vol-enabled            Add one volume per worker node (Default: 0 (disabled))
+    --workers-vol-size               Define the size in gb of the volume (Default: 5)
 
   * Destroying a cluster
 
@@ -99,6 +107,14 @@ while [[ $# > 0 ]] ; do
       WORKERS="$2"
       shift
       ;;
+    --workers-vol-enabled)
+      WORKERS_VOL_ENABLED="$2"
+      shift
+      ;;
+    --workers-vol-size)
+      WORKERS_VOL_SIZE="$2"
+      shift
+      ;;
     -i|--image)
       IMAGE="$2"
       shift
@@ -155,6 +171,12 @@ TF_ARGS="-parallelism=$PARALLELISM \
 
 if [ ! -z "${TFVARS_FILE}" ] ; then
     TF_ARGS="-var-file=$TFVARS_FILE \
+        ${TF_ARGS}"
+fi
+
+if [[ "${WORKERS_VOL_ENABLED}" != "0" ]]; then
+    TF_ARGS="-var workers_vol_enabled=${WORKERS_VOL_ENABLED} \
+        -var workers_vol_size=${WORKERS_VOL_SIZE} \
         ${TF_ARGS}"
 fi
 
