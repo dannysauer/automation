@@ -4,8 +4,7 @@ def kubicLib = library("kubic-jenkins-library@${env.BRANCH_NAME}").com.suse.kubi
 properties([
     buildDiscarder(logRotator(numToKeepStr: '31', daysToKeepStr: '31')),
     disableConcurrentBuilds(),
-    // Run every two hours
-    pipelineTriggers([cron('H H/2 * * *')]),
+    pipelineTriggers([cron('H H(3-5) * * *')]),
     parameters([
         booleanParam(name: 'ENVIRONMENT_DESTROY', defaultValue: true, description: 'Destroy env once done?')
     ]),
