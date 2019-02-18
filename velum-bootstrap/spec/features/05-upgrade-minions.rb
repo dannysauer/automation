@@ -1,7 +1,7 @@
 require "spec_helper"
 require "yaml"
 
-feature "update Admin Node" do
+feature "update minion nodes" do
   let(:hostnames) { environment["minions"].map { |m| m["fqdn"] if m["role"] != "admin" }.compact }
 
   before do
