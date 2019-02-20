@@ -13,7 +13,7 @@
           # the SCM a consistent ID.
           '': '{scm-id}'
           repo: '{name}'
-          repo-owner: 'kubic-project'
+          repo-owner: '{repo-owner}'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: current
@@ -37,7 +37,7 @@
           # the SCM a consistent ID.
           '': '{scm-id}'
           repo: '{name}'
-          repo-owner: 'kubic-project'
+          repo-owner: '{repo-owner}'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: current
@@ -60,7 +60,7 @@
           # the SCM a consistent ID.
           '': '{scm-id}'
           repo: '{name}'
-          repo-owner: 'kubic-project'
+          repo-owner: '{repo-owner}'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: current
@@ -83,7 +83,7 @@
           # the SCM a consistent ID.
           '': '{scm-id}'
           repo: '{name}'
-          repo-owner: 'kubic-project'
+          repo-owner: '{repo-owner}'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: current
