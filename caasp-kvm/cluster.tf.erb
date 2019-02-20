@@ -311,7 +311,7 @@ resource "libvirt_domain" "master" {
   memory     = "${var.master_memory}"
   vcpu       = "${var.master_vcpu}"
   cloudinit  = "${element(libvirt_cloudinit_disk.master.*.id, count.index)}"
-  metadata   = "master-${count.index}.${var.domain_name},master,${count.index},${var.name_prefix}"
+  metadata   = "Master-${count.index}.${var.domain_name},master,${count.index},${var.name_prefix}"
   depends_on = ["libvirt_domain.admin"]
 
 <% if ENV['CAASP_BRIDGE'] != '' -%>
@@ -432,7 +432,7 @@ resource "libvirt_domain" "worker" {
   memory     = "${var.worker_memory}"
   vcpu       = "${var.worker_vcpu}"
   cloudinit  = "${element(libvirt_cloudinit_disk.worker.*.id, count.index)}"
-  metadata   = "worker-${count.index}.${var.domain_name},worker,${count.index},${var.name_prefix}"
+  metadata   = "Worker-${count.index}.${var.domain_name},worker,${count.index},${var.name_prefix}"
   depends_on = ["libvirt_domain.admin"]
 
 <% if ENV['CAASP_BRIDGE'] != '' -%>

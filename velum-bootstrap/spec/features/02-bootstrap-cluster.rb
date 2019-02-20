@@ -70,7 +70,8 @@ feature "Boostrap cluster" do
 
     # They should also appear in the UI
     hostnames.each do |hostname|
-      expect(page).to have_content(hostname)
+      # Velum shows lowercased hostnames
+      expect(page).to have_content(hostname.downcase)
     end
   end
 
