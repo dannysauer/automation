@@ -1,6 +1,7 @@
 # Projects
 - project:
-    name: automation
+    name: caasp-automation
+    repo-owner: SUSE
     jobs:
       - '{name}.integration':
           scm-id: c189a6cf-b714-4057-9124-49f75db02f4d
@@ -10,7 +11,8 @@
           scm-id: 1a7c9ee4-f336-47d4-aa7d-4a12a7224b03
 
 - project:
-    name: jenkins-library
+    name: caasp-jenkins-library
+    repo-owner: SUSE
     jobs:
       - '{name}.integration':
           scm-id: 35433007-14b0-43d5-8531-ecccf12d7330
@@ -21,6 +23,7 @@
 
 - project:
     name: salt
+    repo-owner: kubic-project
     jobs:
       - '{name}.integration':
           scm-id: 2f4d64c6-3d2b-48d7-88e8-147ec9a3d383
@@ -31,6 +34,7 @@
 
 - project:
     name: velum
+    repo-owner: kubic-project
     jobs:
       - '{name}.integration':
           scm-id: 611ede08-2911-46ae-9f55-d2a85f8500c5
@@ -39,12 +43,14 @@
 
 - project:
     name: velum-branding
+    repo-owner: kubic-project
     jobs:
       - '{name}.housekeeping':
           scm-id: 383771d9-f1e5-499f-809b-8fb2882ba6a6
 
 - project:
     name: caasp-container-manifests
+    repo-owner: kubic-project
     jobs:
       - '{name}.integration':
           scm-id: 796742ba-0292-4255-8254-602d9b65762a
@@ -53,24 +59,28 @@
 
 - project:
     name: supportutils-plugin-suse-caasp
+    repo-owner: kubic-project
     jobs:
       - '{name}.housekeeping':
           scm-id: d8033767-13f8-4f51-8134-80494dfd3308
 
 - project:
     name: container-feeder
+    repo-owner: kubic-project
     jobs:
       - '{name}.housekeeping':
           scm-id: 6571c233-3fa9-49bc-b608-c4604f7e0b8f
 
 - project:
     name: caasp-cli
+    repo-owner: kubic-project
     jobs:
       - '{name}.housekeeping':
           scm-id: b69809ac-204e-47af-96fb-5f517643068c
 
 - project:
     name: dex-branding
+    repo-owner: kubic-project
     jobs:
       - '{name}.housekeeping':
           scm-id: 316c42d6-6a26-4e88-87de-f0b01e0e837d
