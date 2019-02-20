@@ -15,8 +15,8 @@
     scm:
       - github:
           '': 'a40a1e55-f6ee-4fd7-bab2-7e73fdf40422'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -34,8 +34,8 @@
     scm:
       - github:
           '': 'f1ae4e54-e153-4300-b140-1b3d61412308'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -53,8 +53,8 @@
     scm:
       - github:
           '': '33dd0793-b5f4-4fb2-8da7-d2041ce52aa1'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -72,8 +72,8 @@
     scm:
       - github:
           '': '4dc6d511-2364-4940-94e6-289a2e63d614'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -91,8 +91,8 @@
     scm:
       - github:
           '': 'ca19dcff-4869-4dd2-888d-e07238d293fb'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -110,8 +110,8 @@
     scm:
       - github:
           '': '3a598a40-fac5-4140-889d-8856254d0515'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -129,8 +129,8 @@
     scm:
       - github:
           '': '5626bb33-c1ae-4f61-ae86-5174b84bdc49'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -148,8 +148,8 @@
     scm:
       - github:
           '': '6a976378-bc17-4bac-b0e4-0b00da8810e5'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -167,8 +167,8 @@
     scm:
       - github:
           '': '6a976378-bc17-4bac-b0e4-0b00da8810e5'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -186,8 +186,8 @@
     scm:
       - github:
           '': '5e574374-3794-48ab-a535-0687f370eec2'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -205,8 +205,8 @@
     scm:
       - github:
           '': '484fc559-5340-4637-8146-fca673d5c161'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -224,8 +224,8 @@
     scm:
       - github:
           '': '48305b0c-6325-43f4-8372-38c348931da8'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -243,8 +243,8 @@
     scm:
       - github:
           '': '866a5b3f-2038-48d4-8789-39e8a28b922a'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: false
@@ -253,7 +253,7 @@
           suppress-automatic-scm-triggering: true
 
 - job:
-    name: automation.jenkins-jobs
+    name: caasp-automation.jenkins-jobs
     project-type: multibranch
     periodic-folder-trigger: 1h
     number-to-keep: 30
@@ -262,8 +262,8 @@
     scm:
       - github:
           '': '4a57f25e-325d-4a20-9443-28ea9bb56628'
-          repo: 'automation'
-          repo-owner: 'kubic-project'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
           credentials-id: 'github-token-caaspjenkins'
           branch-discovery: no-pr
           discover-pr-forks-strategy: current
