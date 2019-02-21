@@ -34,7 +34,9 @@ Create a directory for the test files regarding a MU:
 
 Create a test suite in the MU directory: 
 
-* at the beginning of the file, add the title and link
+* Filename should be like `test_bsc#1234567.py` 
+
+* At the beginning of the file, add the title and link
 to the relative PR(s)
 
 
