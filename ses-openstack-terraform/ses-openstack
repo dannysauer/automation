@@ -32,9 +32,8 @@ USAGE:
   * worker_size - SES Worker OpenStack Flavour
   * mons - Number of SES Mon nodes
   * osds - Number of SES OSD nodes
-  * regcode - sles reg code
-  * ses_base - ses base repo
-  * ses_update - ses update repo
+  * regcode_SLES - sles reg code
+  * regcode_SES - ses reg code
   * identifier - appends to ssh key names and security group definitions so that there are no colissions when using one namespace
 
   3. Run ses-openstack with following action:
@@ -87,4 +86,5 @@ fi
 
 terraform $COMMAND -var auth_url=$OS_AUTH_URL -var domain_name=$OS_USER_DOMAIN_NAME \
                     -var region_name=$OS_REGION_NAME -var project_name=$OS_PROJECT_NAME \
-                    -var user_name=$OS_USERNAME -var password=$OS_PASSWORD -var-file=openstack.tfvars
+                    -var user_name=$OS_USERNAME -var password=$OS_PASSWORD -var-file=terraform.tfvars \
+                    -auto-approve
