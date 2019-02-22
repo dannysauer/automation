@@ -1,4 +1,7 @@
-library "kubic-jenkins-library@${env.BRANCH_NAME}"
+def kubicLib = library(identifier: "kubic-jenkins-library@master", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+    remote: 'https://github.com/suse/caasp-jenkins-library.git',
+    credentialsId: 'github-token'])).com.suse.kubic
 
 // This pipeline runs daily end-to-end tests by deploying an ISO on Bare Metal
 

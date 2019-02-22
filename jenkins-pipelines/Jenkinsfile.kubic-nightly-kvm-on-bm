@@ -1,4 +1,7 @@
-def kubicLib = library("kubic-jenkins-library@${env.BRANCH_NAME}").com.suse.kubic
+def kubicLib = library(identifier: "kubic-jenkins-library@master", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+    remote: 'https://github.com/suse/caasp-jenkins-library.git',
+    credentialsId: 'github-token'])).com.suse.kubic
 
 // This pipeline runs on KVM on dedicated BM hosts
 
