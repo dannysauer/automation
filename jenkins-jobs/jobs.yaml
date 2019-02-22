@@ -82,6 +82,25 @@
           suppress-automatic-scm-triggering: true
 
 - job:
+    name: caasp-nightly-openstack-vmware
+    project-type: multibranch
+    periodic-folder-trigger: 1h
+    number-to-keep: 30
+    days-to-keep: 30
+    scriptPath: jenkins-pipelines/Jenkinsfile.kubic-nightly-vmware
+    scm:
+      - github:
+          '': 'a381aabc-48c6-4964-bfcc-811923c6cdb3'
+          repo: 'caasp-automation'
+          repo-owner: 'SUSE'
+          credentials-id: 'github-token-caaspjenkins'
+          branch-discovery: no-pr
+          discover-pr-forks-strategy: false
+          discover-pr-origin: false
+          filter-head-regex: ^(master|release\-\d\.\d)$
+          suppress-automatic-scm-triggering: true
+
+- job:
     name: caasp-nightly-openstack-terraform
     project-type: multibranch
     periodic-folder-trigger: 1h
