@@ -1,4 +1,7 @@
-library "kubic-jenkins-library@${env.BRANCH_NAME}"
+library identifier: "kubic-jenkins-library@master", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+    remote: 'https://github.com/suse/caasp-jenkins-library.git',
+    credentialsId: 'github-token'])
 
 // This pipeline runs as a regular job to download images and upload them into OpenStack
 
