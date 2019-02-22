@@ -163,7 +163,7 @@ resource "libvirt_domain" "admin" {
   name      = "${var.name_prefix}admin"
   memory    = "${var.admin_memory}"
   vcpu      = "${var.admin_vcpu}"
-  metadata  = "admin.${var.domain_name},admin,${count.index}"
+  metadata  = "Admin.${var.domain_name},admin,${count.index}"
   cloudinit = "${libvirt_cloudinit_disk.admin.id}"
 
 
