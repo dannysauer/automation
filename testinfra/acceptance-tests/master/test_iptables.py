@@ -1,11 +1,8 @@
-# Limit access to KUBE-APISERVER port 6444 on master nodes, bsc#1121144
-# https://github.com/SUSE/kubic-salt-security-fixes/pull/11
-# https://github.com/SUSE/kubic-salt-security-fixes/pull/14 (backport)
-
 import pytest
 
 
 @pytest.mark.master
+@pytest.mark.bsc1121144
 def test_iptables_0_0_6444_accept_disabled(host):
     input_rules = host.iptables.rules('filter', 'INPUT')
     rule = "-A INPUT -p tcp -m state --state NEW -m tcp --dport 6444 -j ACCEPT"
@@ -14,6 +11,7 @@ def test_iptables_0_0_6444_accept_disabled(host):
 
 
 @pytest.mark.master
+@pytest.mark.bsc1121144
 def test_iptables_localhost_6444_accept_enabled(host):
     input_rules = host.iptables.rules('filter', 'INPUT')
     rule = "-A INPUT -s 127.0.0.1/32 -p tcp -m state --state NEW -m tcp --dport 6444 -j ACCEPT"
@@ -22,6 +20,7 @@ def test_iptables_localhost_6444_accept_enabled(host):
 
 
 @pytest.mark.master
+@pytest.mark.bsc1121144
 def test_iptables_host_net_6444_accept_enabled(host):
     input_rules = host.iptables.rules('filter', 'INPUT')
 
@@ -38,6 +37,7 @@ def test_iptables_host_net_6444_accept_enabled(host):
 
 
 @pytest.mark.master
+@pytest.mark.bsc1121144
 def test_iptables_pod_subnet_6444_accept_enabled(host):
     input_rules = host.iptables.rules('filter', 'INPUT')
     rule = "-A INPUT -s 172.16.0.0/13 -p tcp -m state --state NEW -m tcp --dport 6444 -j ACCEPT"
@@ -46,22 +46,9 @@ def test_iptables_pod_subnet_6444_accept_enabled(host):
 
 
 @pytest.mark.master
+@pytest.mark.bsc1121144
 def test_iptables_0_0_6444_drop_enabled(host):
     input_rules = host.iptables.rules('filter', 'INPUT')
     rule = "-A INPUT -p tcp -m state --state NEW -m tcp --dport 6444 -j DROP"
 
     assert rule in input_rules
-
-
-@pytest.mark.master
-def test_pods_in_kubesystem_ns_are_ready(host):
-    non_running_pods = host.run("kubectl -n kube-system get po --no-headers | grep -v 'Running'")
-
-    assert non_running_pods.rc == 1
-
-
-@pytest.mark.master
-def test_all_nodes_are_ready(host):
-    non_ready_nodes = host.run("kubectl get nodes --no-headers | grep -v 'Ready'")
-
-    assert non_ready_nodes.rc == 1

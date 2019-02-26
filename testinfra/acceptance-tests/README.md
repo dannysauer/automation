@@ -11,34 +11,16 @@ for acceptance/integration testing.
 
 ## Structure
 
-* When there is no MU
-
-Put the test file in `waiting_for_mu`
-
-* When a MU is ready
-
-Create a directory for the test files regarding a MU:
-
-`S-M-10303-184108`
-
-**S**: Suse
-
-**M**: Maintenance
-
-**10303**: MR - Maintenance Request
-
-**184108**: RR - Release Request
-
 
 ## Tests
 
-Create a test suite in the MU directory: 
+For each bug, create the test functions in the concerned files.
 
-* Filename should be like `test_bsc#1234567.py` 
+Add a marker with the `bsc` for each function.
 
-* At the beginning of the file, add the title and link
-to the relative PR(s)
-
+```python
+pytest.mark.bsc1234567
+```
 
 ## Run the tests manually
 
@@ -46,10 +28,17 @@ The parts 1 and 2 should be done in automation.
 
 1. Generate environment.json
 2. Generate environment.ssh_config
-3. Test
 
-example:
+3. Test all
 
 ```console
 ./testAllRoles.sh $ENVIRONMENT $SSH_CONFIG ../bsc-tests/S-M-10303-184108/ -v
+```
+
+3. Test only a specific bug
+
+e.g with pytest, this would need to be integrated in a proper way for CI
+
+```console
+py.test --connection ssh --sudo --hosts 10.84.154.105 -m "bsc1234567"  -v
 ```
