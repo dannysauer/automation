@@ -30,24 +30,6 @@ coreKubicProjectPeriodic(
 ) {
     // empty preBootstrapBody
 } {
-    /*
-    // Run through the upgrade orchestration
-    upgradeEnvironmentStage1(
-        environment: environment,
-        fakeUpdatesAvailable: true
-    )
-
-    upgradeEnvironmentStage2(
-        environment: environment
-    )
-    */
-
-    // Run the Core Project Tests again
-    coreKubicProjectTests(
-        environment: environment,
-        podName: 'default'
-    )
-
     return environment
 }
 
