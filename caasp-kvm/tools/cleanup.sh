@@ -9,8 +9,8 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 echo "Starting cleanup script"
 
 echo "--> Cleaning up VMs"
-sudo virsh list --all | (grep -E "(Admin|(Master|Worker)_[0-9]+)" || :)
-sudo virsh list --all | (grep -E "(Admin|(Master|Worker)_[0-9]+)" || :) | awk '{print $2}' | \
+sudo virsh list --all | (grep -E "(admin|(Master|Worker)_[0-9]+)" || :)
+sudo virsh list --all | (grep -E "(admin|(Master|Worker)_[0-9]+)" || :) | awk '{print $2}' | \
   xargs --no-run-if-empty -n1 -I{} sh -c 'sudo virsh destroy {}; sudo virsh undefine {}'
 
 echo "--> Cleaning up Networks"
@@ -23,7 +23,7 @@ pools="$(sudo virsh pool-list --all | sed 1,2d | awk '{print $1}')"
 echo "    Pools: $pools"
 for pool in $pools; do
 sudo virsh vol-list --pool "$pool" | \
-  (grep -E -e "Admin(_cloud_init)?" \
+  (grep -E -e "admin(_cloud_init)?" \
            -e "(Master|Worker)(_cloud_init)?_(disk)?[0-9]+" \
            -e "additional-worker-volume" \
            -e "kvm-devel" \
