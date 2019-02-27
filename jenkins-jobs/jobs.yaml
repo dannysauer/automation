@@ -82,7 +82,7 @@
           suppress-automatic-scm-triggering: true
 
 - job:
-    name: caasp-nightly-openstack-vmware
+    name: caasp-nightly-vmware
     project-type: multibranch
     periodic-folder-trigger: 1h
     number-to-keep: 30
