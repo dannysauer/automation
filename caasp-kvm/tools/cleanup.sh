@@ -9,8 +9,8 @@ DIR="$( cd "$( dirname "$0" )" && pwd )"
 echo "Starting cleanup script"
 
 echo "--> Cleaning up VMs"
-sudo virsh list --all | (grep -E "(admin|(Master|Worker)_[0-9]+)" || :)
-sudo virsh list --all | (grep -E "(admin|(Master|Worker)_[0-9]+)" || :) | awk '{print $2}' | \
+sudo virsh list --all | (grep -E "(admin|([Mm]aster|[Ww]orker)_[0-9]+)" || :)
+sudo virsh list --all | (grep -E "(admin|([Mm]aster|[Ww]orker)_[0-9]+)" || :) | awk '{print $2}' | \
   xargs --no-run-if-empty -n1 -I{} sh -c 'sudo virsh destroy {}; sudo virsh undefine {}'
 
 echo "--> Cleaning up Networks"
@@ -24,7 +24,7 @@ echo "    Pools: $pools"
 for pool in $pools; do
 sudo virsh vol-list --pool "$pool" | \
   (grep -E -e "admin(_cloud_init)?" \
-           -e "(Master|Worker)(_cloud_init)?_(disk)?[0-9]+" \
+           -e "([Mm]aster|[Ww]orker)(_cloud_init)?_(disk)?[0-9]+" \
            -e "additional-worker-volume" \
            -e "kvm-devel" \
            -e "SUSE-CaaS-Platform-.*KVM.*Build[0-9]+\.[0-9]+" \
@@ -47,7 +47,7 @@ typeset -A keepers=()
 for F in kvm-+([[:alnum:]]); do
   if [[ -L "$F" ]]; then
     T="$(readlink -fs "$F")"
-    [[ -f "$T" ]] && keepers[$(basename $T)]=1 
+    [[ -f "$T" ]] && keepers[$(basename $T)]=1
   fi
 done
 for F in *.qcow2; do
