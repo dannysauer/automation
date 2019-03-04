@@ -11,6 +11,7 @@ RUN_DESTROY=false
 NAME=caasp-stack
 OPENRC_FILE=
 HEAT_ENVIRONMENT_FILE=heat-environment.yaml.example
+HEAT_TEMPLATE_FILE=
 MASTERS=3
 WORKERS=2
 IMAGE=
@@ -34,6 +35,7 @@ Usage:
 
     -o|--openrc             <STR>   Path to an openrc file
     -e|--heat-environment   <STR>   Path to a heat environment file
+    -t|--heat-template      <STR>   Path to the heat template to use
 
   * Examples:
 
@@ -73,6 +75,12 @@ while [[ $# -gt 0 ]] ; do
       f="$(realpath $2)"
       check_file "$f"
       HEAT_ENVIRONMENT_FILE="$f"
+      shift
+      ;;
+    -t|--heat-template)
+      f="$(realpath $2)"
+      check_file "$f"
+      HEAT_TEMPLATE_FILE="$f"
       shift
       ;;
     -b|--build)
@@ -117,6 +125,7 @@ done
 build_stack() {
   [ -z "$NAME" ] && error "Option --name is required"
   [ -z "$IMAGE" ] && error "Option --image is required"
+  [ -z "$HEAT_TEMPLATE_FILE" ]  && error "Option --heat-template is required"
 
   log "Creating Stack"
 
@@ -125,7 +134,7 @@ build_stack() {
   echo -n "$NAME" > .stack_name
 
   source "$OPENRC_FILE"
-  openstack stack create --verbose --wait -e "$HEAT_ENVIRONMENT_FILE" -t caasp-stack.yaml "$NAME" \
+  openstack stack create --verbose --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$NAME" \
     --parameter master_count=$MASTERS \
     --parameter worker_count=$WORKERS \
     --parameter image="$IMAGE"
@@ -141,6 +150,7 @@ build_stack() {
 
 update_stack() {
   [ -z "$IMAGE" ] && error "Option --image is required"
+  [ -z "$HEAT_TEMPLATE_FILE" ]  && error "Option --heat-template is required"
 
   local stack_name=$(cat .stack_name)
   [ -n "$NAME" ] && stack_name="$NAME"
@@ -148,7 +158,7 @@ update_stack() {
   log "Updating Stack with ID $stack_name"
 
   source "$OPENRC_FILE"
-  openstack stack update --wait -e "$HEAT_ENVIRONMENT_FILE" -t caasp-stack.yaml "$stack_name" \
+  openstack stack update --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$stack_name" \
     --parameter master_count=$MASTERS \
     --parameter worker_count=$WORKERS \
     --parameter image="$IMAGE"
