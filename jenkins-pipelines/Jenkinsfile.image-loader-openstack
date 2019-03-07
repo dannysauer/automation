@@ -13,9 +13,6 @@ properties([
         [$class: 'org.jenkinsci.plugins.parameterizedscheduler.ParameterizedTimerTrigger',
             parameterizedSpecification: '@midnight % CHANNEL=devel\n@midnight % CHANNEL=devel'
         ]
-    ]),
-    parameters([
-        choice(choices: 'devel\nrelease\nstaging_a\nstaging_b', description: 'What channel should the image be loaded from?', name: 'CHANNEL')
     ])
 ])
 
@@ -29,18 +26,22 @@ node('leap15.0') {
             cloneKubicRepo(gitBase: "https://github.com/kubic-project", branch: env.BRANCH_NAME, credentialsId: "github-token", repo: "automation")
         }
 
-        stage('Fetch Image') {
-            dir('automation/misc-tools') {
-                withCredentials([string(credentialsId: 'caasp-proxy-host', variable: 'CAASP_PROXY')]) {
-                    sh(script: "./download-image --proxy ${CAASP_PROXY} --type openstack channel://${params.CHANNEL}")
+        for (CHANNEL in ['devel', 'staging_a', 'staging_b', 'product']) {
+            stage('Fetch Image') {
+                dir('automation/misc-tools') {
+                    withCredentials([
+                        string(credentialsId: 'caasp-proxy-host', variable: 'CAASP_PROXY'),
+                        string(credentialsId: 'caasp-location', variable: 'CAASP_LOCATION')])
+                        sh(script: "./download-image --location ${CAASP_LOCATION} --proxy ${CAASP_PROXY} --type openstack channel://${CHANNEL}")
+                    }
                 }
             }
-        }
 
-        stage('Upload Image') {
-            dir('automation/misc-tools') {
-                withCredentials([file(credentialsId: 'ecp-cloud-shared', variable: 'OPENRC')]) {
-                    sh(script: "./upload-image-openstack.sh ${OPENRC} ${CHANNEL}")
+            stage('Upload Image') {
+                dir('automation/misc-tools') {
+                    withCredentials([file(credentialsId: 'ecp-cloud-shared', variable: 'OPENRC')]) {
+                        sh(script: "./upload-image-openstack.sh ${OPENRC} ${CHANNEL}")
+                    }
                 }
             }
         }
