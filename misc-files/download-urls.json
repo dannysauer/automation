@@ -15,13 +15,16 @@
       "default": "http://download.opensuse.org/repositories/devel:/CaaSP:/images/"
     },
     "release": {
-      "default": "http://download.suse.de/ibs/SUSE:/SLE-12-SP3:/Update:/Products:/CASP30/"
+      "default": "http://download.suse.de/ibs/SUSE:/SLE-15:/Update:/Products:/CASP40/",
+      "provo": "http://ibs-mirror.prv.suse.net/ibs/SUSE:/SLE-15:/Update:/Products:/CASP40/"
     },
     "staging_a": {
-      "default": "http://download.suse.de/ibs/SUSE:/SLE-12-SP3:/Update:/Products:/CASP30:/Staging:/A/"
+      "default": "http://download.suse.de/ibs/SUSE:/SLE-15:/Update:/Products:/CASP40:/Staging:/A/",
+      "provo": "http://ibs-mirror.prv.suse.net/ibs/SUSE:/SLE-15:/Update:/Products:/CASP40:/Staging:/A/"
     },
     "staging_b": {
-      "default": "http://download.suse.de/ibs/SUSE:/SLE-12-SP3:/Update:/Products:/CASP30:/Staging:/B/"
+      "default": "http://download.suse.de/ibs/SUSE:/SLE-15:/Update:/Products:/CASP40:/Staging:/B/",
+      "provo": "http://ibs-mirror.prv.suse.net/ibs/SUSE:/SLE-15:/Update:/Products:/CASP40:/Staging:/B/"
     }
   },
   "format_version": 2
