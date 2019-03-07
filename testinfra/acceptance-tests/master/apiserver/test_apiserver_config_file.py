@@ -3,18 +3,22 @@ import pytest
 
 @pytest.mark.master
 @pytest.mark.bsc1121146
-def test_certs_are_configured(host):
+@pytest.mark.parametrize("option", [
+    "--kubelet-certificate-authority=/etc/pki/trust/anchors/SUSE_CaaSP_CA.crt",
+    "--kubelet-client-certificate=/etc/pki/kube-apiserver-kubelet-client.crt",
+    "--kubelet-client-key=/etc/pki/kube-apiserver-kubelet-client.key"])
+def test_certs_are_configured(host, option):
     config = host.file("/etc/kubernetes/apiserver").content_string
 
-    assert "--kubelet-certificate-authority=/etc/pki/trust/anchors/SUSE_CaaSP_CA.crt" in config
-    assert "--kubelet-client-certificate=/etc/pki/kube-apiserver-kubelet-client.crt" in config
-    assert "--kubelet-client-key=/etc/pki/kube-apiserver-kubelet-client.key" in config
+    assert option in config
 
 
 @pytest.mark.master
 @pytest.mark.bsc1121148
-def test_insecure_api_is_disabled(host):
+@pytest.mark.parametrize("option", [
+    "--insecure-bind-address=127.0.0.1",
+    "--insecure-port=0"])
+def test_insecure_api_is_disabled(host, option):
     config = host.file("/etc/kubernetes/apiserver").content_string
 
-    assert "--insecure-bind-address=127.0.0.1" not in config
-    assert "--insecure-port=0" in config
+    assert option in config
