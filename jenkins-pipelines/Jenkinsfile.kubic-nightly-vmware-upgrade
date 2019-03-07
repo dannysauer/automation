@@ -3,7 +3,7 @@ def kubicLib = library(identifier: "kubic-jenkins-library@master", retriever: mo
     remote: 'https://github.com/suse/caasp-jenkins-library.git',
     credentialsId: 'github-token'])).com.suse.kubic
 
-// This pipeline runs daily tests on KVM
+// This pipeline runs daily tests on VMware
 
 // Configure the build properties
 properties([
@@ -11,16 +11,22 @@ properties([
     disableConcurrentBuilds(),
     pipelineTriggers([cron('H H(3-5) * * *')]),
     parameters([
-        booleanParam(name: 'ENVIRONMENT_DESTROY', defaultValue: true, description: 'Destroy env once done?')
-    ]),
+        string(name: 'MASTER_COUNT', defaultValue: '3', description: 'Number of Master Nodes'),
+        string(name: 'WORKER_COUNT', defaultValue: '2', description: 'Number of Worker Nodes'),
+        booleanParam(name: 'ENVIRONMENT_DESTROY', defaultValue: true, description: 'Destroy env once done'),
+    ])
 ])
 
-def kvmTypeOptions = kubicLib.CaaspKvmTypeOptions.new();
-kvmTypeOptions.vanilla = true
+def vmwareTypeOptions = kubicLib.CaaspVMwareTypeOptions.new();
+vmwareTypeOptions.vanilla = true
 
 coreKubicProjectPeriodic(
-    environmentTypeOptions: kvmTypeOptions,
+    nodeLabel: 'vmware-geniso',
+    environmentType: 'vmware',
+    environmentTypeOptions: vmwareTypeOptions,
     environmentDestroy: env.ENVIRONMENT_DESTROY.toBoolean(),
+    masterCount: env.MASTER_COUNT.toInteger(),
+    workerCount: env.WORKER_COUNT.toInteger(),
 ) {
     // empty preBootstrapBody
 } {
@@ -37,4 +43,5 @@ coreKubicProjectPeriodic(
     coreKubicProjectNodeTests(
         environment: environment
     )
+    return environment
 }
