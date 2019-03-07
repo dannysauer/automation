@@ -7,7 +7,7 @@ CHANNEL=$2
 
 IMAGE_FILENAME=$(readlink ../downloads/openstack-${CHANNEL})
 IMAGE_BUILD=$(echo $IMAGE_FILENAME | sed -n 's/.*\(Build.*\).qcow2/\1/p')
-IMAGE_VERSION=$(echo $IMAGE_FILENAME | sed -n 's/.*CaaS-Platform-\(.*\)-\(for\|CaaSP\).*-OpenStack-Cloud.*/\1/p')
+IMAGE_VERSION=$(echo $IMAGE_FILENAME | sed -n 's/.*\(CaaS-Platform\|CaaSP\)-\(.*\)-\(for\|CaaSP\).*-OpenStack-Cloud.*/\1/p')
 IMAGE_NAME="CaaSP-${CHANNEL}-${IMAGE_VERSION}-${IMAGE_BUILD}"
 
 [[ -e $OPENRC ]] && source $OPENRC
