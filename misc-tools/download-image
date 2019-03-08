@@ -28,7 +28,7 @@ regexp = {
         "default": r'%(docker_image)s.*x86_64-.*\.tar\.xz$'
     },
     "openstack": {
-        "default": r'.*OpenStack-Cloud.*x86_64-.*\.qcow2$'
+        "default": r'.*-OpenStack-Cloud.*qcow2$'
     },
     "vmware": {
         "default": r'SUSE-CaaSP-4.0.*CaaSP-Stack-VMware.*\.vmdk'
