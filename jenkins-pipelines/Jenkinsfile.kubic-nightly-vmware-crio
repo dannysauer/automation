@@ -1,0 +1,48 @@
+def kubicLib = library(identifier: "kubic-jenkins-library@master", retriever: modernSCM(
+    [$class: 'GitSCMSource',
+    remote: 'https://github.com/suse/caasp-jenkins-library.git',
+    credentialsId: 'github-token'])).com.suse.kubic
+
+// This pipeline runs daily tests on VMware against cri-o instead of the default (Docker)
+
+// Configure the build properties
+properties([
+    buildDiscarder(logRotator(numToKeepStr: '31', daysToKeepStr: '31')),
+    disableConcurrentBuilds(),
+    pipelineTriggers([cron('H H(3-5) * * *')]),
+    parameters([
+        string(name: 'MASTER_COUNT', defaultValue: '3', description: 'Number of Master Nodes'),
+        string(name: 'WORKER_COUNT', defaultValue: '2', description: 'Number of Worker Nodes'),
+        booleanParam(name: 'ENVIRONMENT_DESTROY', defaultValue: true, description: 'Destroy env once done'),
+    ])
+])
+
+def vmwareTypeOptions = kubicLib.CaaspVMwareTypeOptions.new();
+vmwareTypeOptions.vanilla = true
+
+coreKubicProjectPeriodic(
+    nodeLabel: 'vmware-geniso',
+    environmentType: 'vmware',
+    environmentTypeOptions: vmwareTypeOptions,
+    environmentDestroy: env.ENVIRONMENT_DESTROY.toBoolean(),
+    masterCount: env.MASTER_COUNT.toInteger(),
+    workerCount: env.WORKER_COUNT.toInteger(),
+    chooseCrio: true,
+) {
+    // empty preBootstrapBody
+} {
+    // Run through the upgrade orchestration
+    upgradeEnvironmentStage1(
+        environment: environment,
+        fakeUpdatesAvailable: true
+    )
+
+    upgradeEnvironmentStage2(
+        environment: environment
+    )
+
+    coreKubicProjectNodeTests(
+        environment: environment
+    )
+    return environment
+}
