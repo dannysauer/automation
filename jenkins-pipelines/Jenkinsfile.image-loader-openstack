@@ -26,7 +26,7 @@ node('leap15.0') {
             cloneKubicRepo(gitBase: "https://github.com/kubic-project", branch: env.BRANCH_NAME, credentialsId: "github-token", repo: "automation")
         }
 
-        for (CHANNEL in ['devel', 'staging_a', 'staging_b', 'product']) {
+        for (CHANNEL in ['devel', 'staging_a', 'staging_b', 'release']) {
             stage('Fetch Image') {
                 dir('automation/misc-tools') {
                     withCredentials([string(credentialsId: 'caasp-proxy-host', variable: 'CAASP_PROXY')]) {
