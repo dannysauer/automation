@@ -2,11 +2,11 @@
   "baseurl": {
     "devel": {
       "default": "http://download.suse.de/ibs/Devel:/CASP:/Head:/ControllerNode/",
-      "provo": "http://download.suse.de/ibs/Devel:/CASP:/Head:/ControllerNode/"
+      "provo": "http://mirror.caasp.suse.net/ibs/Devel:/CASP:/Head:/ControllerNode/"
     },
     "devel_15": {
       "default": "http://download.suse.de/ibs/Devel:/CASP:/Head:/ControllerNode/",
-      "provo": "http://download.suse.de/ibs/Devel:/CASP:/Head:/ControllerNode/"
+      "provo": "http://mirror.caasp.suse.net/ibs/Devel:/CASP:/Head:/ControllerNode/"
     },
     "sandbox": {
       "default": "http://download.suse.de/ibs/Devel:/CASP:/SandBox/"
