@@ -40,6 +40,16 @@ coreKubicProjectPeriodic(
       sh(script: "./automation/misc-tools/network-emulation setup all --env-json-path ${WORKSPACE}/environment.json -l ${WORKSPACE}/logs/netem-setup.log --latency ${LATENCY} --jitter ${JITTER} --packet-loss ${PACKET_LOSS} --duplication ${DUPLICATION} --corruption ${CORRUPTION} --bandwidth ${BANDWIDTH}")
     }
 
+    // Run through the upgrade orchestration
+    upgradeEnvironmentStage1(
+        environment: environment,
+        fakeUpdatesAvailable: true
+    )
+
+    upgradeEnvironmentStage2(
+        environment: environment
+    )
+
     coreKubicProjectNodeTests(
         environment: environment
     )
