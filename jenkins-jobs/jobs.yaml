@@ -139,6 +139,26 @@
           suppress-automatic-scm-triggering: true
 
 - job:
+      name: caasp-nightly-openstack-heat
+      project-type: multibranch
+      periodic-folder-trigger: 1h
+      number-to-keep: 30
+      days-to-keep: 30
+      scriptPath: jenkins-pipelines/Jenkinsfile.kubic-nightly-openstack-heat
+      scm:
+          - github:
+                '': 'a32bbd4d-3a9b-4715-8209-4c5d2d952e4b'
+                repo: 'caasp-automation'
+                repo-owner: 'SUSE'
+                credentials-id: 'github-token-caaspjenkins'
+                branch-discovery: no-pr
+                discover-pr-forks-strategy: false
+                discover-pr-origin: false
+                filter-head-regex: ^(master|release\-\d\.\d)$
+                suppress-automatic-scm-triggering: true
+
+
+- job:
     name: caasp-nightly-openstack-terraform
     project-type: multibranch
     periodic-folder-trigger: 1h

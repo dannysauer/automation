@@ -11,44 +11,42 @@ properties([
     parameters([
         string(name: 'OPENSTACK_IMAGE', defaultValue: '', description: 'OpenStack Image To Use'),
         string(name: 'MASTER_COUNT', defaultValue: '3', description: 'Number of Master Nodes'),
-        string(name: 'WORKER_COUNT', defaultValue: '25', description: 'Number of Worker Nodes'),
+        string(name: 'WORKER_COUNT', defaultValue: '2', description: 'Number of Worker Nodes'),
         string(name: 'ADMIN_FLAVOR', defaultValue: 'm1.xlarge', description: 'Flavor for Admin Node'),
-        string(name: 'MASTER_FLAVOR', defaultValue: 'm1.xlarge', description: 'Flavor for Master Nodes'),
+        string(name: 'MASTER_FLAVOR', defaultValue: 'm1.large', description: 'Flavor for Master Nodes'),
         string(name: 'WORKER_FLAVOR', defaultValue: 'm1.large', description: 'Flavor for Worker Nodes'),
         booleanParam(name: 'ENVIRONMENT_DESTROY', defaultValue: true, description: 'Destroy env once done?')
     ])
 ])
 
-def openstackTypeOptions = kubicLib.OpenstackTypeOptions.new();
+def openstackTypeOptions = kubicLib.OpenstackTypeOptions.new()
+
 openstackTypeOptions.image = env.OPENSTACK_IMAGE
 openstackTypeOptions.adminFlavor = env.ADMIN_FLAVOR
 openstackTypeOptions.masterFlavor = env.MASTER_FLAVOR
 openstackTypeOptions.workerFlavor = env.WORKER_FLAVOR
 
-lock('openstack-single-user') {
-    coreKubicProjectPeriodic(
-        // Prefer m1.large workers, fallback to any leap15.0 worker.
-        nodeLabel: 'leap15.0&&m1.large||leap15.0',
-        environmentType: 'openstack',
-        environmentTypeOptions: openstackTypeOptions,
-        environmentDestroy: env.ENVIRONMENT_DESTROY.toBoolean(),
-        masterCount: env.MASTER_COUNT.toInteger(),
-        workerCount: env.WORKER_COUNT.toInteger()
-    ) {
-        // empty preBootstrapBody
-    } {
-        // Run through the upgrade orchestration
-        upgradeEnvironmentStage1(
-            environment: environment,
-            fakeUpdatesAvailable: true
-        )
 
-        upgradeEnvironmentStage2(
-            environment: environment
-        )
+coreKubicProjectPeriodic(
+    environmentType: 'openstack',
+    environmentTypeOptions: openstackTypeOptions,
+    environmentDestroy: env.ENVIRONMENT_DESTROY.toBoolean(),
+    masterCount: env.MASTER_COUNT.toInteger(),
+    workerCount: env.WORKER_COUNT.toInteger()
+) {
+    // empty preBootstrapBody
+} {
+    // Run through the upgrade orchestration
+    upgradeEnvironmentStage1(
+        environment: environment,
+        fakeUpdatesAvailable: true
+    )
 
-        coreKubicProjectNodeTests(
-            environment: environment
-        )
-    }
+    upgradeEnvironmentStage2(
+        environment: environment
+    )
+
+    coreKubicProjectNodeTests(
+        environment: environment
+    )
 }

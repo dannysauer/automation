@@ -10,7 +10,7 @@ RUN_DESTROY=false
 
 NAME=caasp-stack
 OPENRC_FILE=
-HEAT_ENVIRONMENT_FILE=heat-environment.yaml.example
+HEAT_ENVIRONMENT_FILE=heat-environment.yaml
 HEAT_TEMPLATE_FILE=
 MASTERS=3
 WORKERS=2
@@ -122,22 +122,51 @@ done
 [ -z "$OPENRC_FILE" ]  && error "Option --openrc is required"
 
 # Core methods
+update_load_balancer_security_groups() {
+    local vip_port_id=$(openstack stack resource show "$NAME" master_lb -f json | jq -r '.attributes.vip_port_id')
+    local resource_list=$(openstack stack resource list "$NAME" -f json)
+    local secgroup_base_id=$(echo "$resource_list" | jq -r '.[] | select( .resource_name == "secgroup_base" ) | "\(.physical_resource_id)"')
+    local secgroup_master_id=$(echo "$resource_list" | jq -r '.[] | select( .resource_name == "secgroup_master" ) | "\(.physical_resource_id)"')
+
+    log "Adding the load balancer vip port $vip_port_id security groups to:"
+    log "  secgroup_base: $secgroup_base_id"
+    log "  secgroup_master: $secgroup_master_id"
+
+    openstack port set --security-group "$secgroup_base_id" --security-group "$secgroup_master_id" "$vip_port_id"
+}
+
 build_stack() {
   [ -z "$NAME" ] && error "Option --name is required"
-  [ -z "$IMAGE" ] && error "Option --image is required"
   [ -z "$HEAT_TEMPLATE_FILE" ]  && error "Option --heat-template is required"
 
-  log "Creating Stack"
+  source "$OPENRC_FILE"
+
+  if [ -z "$IMAGE" ]; then
+    # If image not given get latest devel image
+    IMAGE=$(openstack image list --format json --property caasp-channel='devel' --sort caasp-version:desc | jq -r '.[0].Name')
+
+    [ -z "$IMAGE" ] && error "Could not find the latest image try using the --image option"
+  fi
+
+  log "Creating Stack with image $IMAGE"
 
   # Keep track of the stack name (which Heat enforces as being unique) for
   # later use in commands like delete.
   echo -n "$NAME" > .stack_name
 
-  source "$OPENRC_FILE"
-  openstack stack create --verbose --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$NAME" \
+  if [ ${MASTERS} -gt 1 ]; then
+    openstack stack create --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$NAME" \
     --parameter master_count=$MASTERS \
     --parameter worker_count=$WORKERS \
     --parameter image="$IMAGE"
+
+    # Assume load balancer with more than one master
+    update_load_balancer_security_groups
+  else
+    openstack stack create --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$NAME" \
+    --parameter worker_count=$WORKERS \
+    --parameter image="$IMAGE"
+  fi
 
   log "CaaSP Stack Created with name $NAME"
 
@@ -158,10 +187,17 @@ update_stack() {
   log "Updating Stack with ID $stack_name"
 
   source "$OPENRC_FILE"
-  openstack stack update --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$stack_name" \
-    --parameter master_count=$MASTERS \
-    --parameter worker_count=$WORKERS \
-    --parameter image="$IMAGE"
+
+  if [ ${MASTERS} -gt 1 ]; then
+      openstack stack update --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$stack_name" \
+        --parameter master_count=$MASTERS \
+        --parameter worker_count=$WORKERS \
+        --parameter image="$IMAGE"
+  else
+      openstack stack update --wait -e "$HEAT_ENVIRONMENT_FILE" -t "$HEAT_TEMPLATE_FILE" "$stack_name" \
+        --parameter worker_count=$WORKERS \
+        --parameter image="$IMAGE"
+  fi
 
   ./tools/generate-environment "$NAME"
   ../misc-tools/generate-ssh-config environment.json
