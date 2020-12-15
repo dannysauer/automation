@@ -36,7 +36,7 @@ GEM
     pry-nav (0.2.4)
       pry (>= 0.9.10, < 0.11.0)
     public_suffix (2.0.5)
-    rack (1.6.8)
+    rack (2.1.4)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rainbow (3.0.0)
@@ -81,7 +81,7 @@ DEPENDENCIES
   poltergeist
   pry
   pry-nav
-  rack (~> 1.6.5)
+  rack (~> 2.1.4)
   rspec
   rspec_junit_formatter
   rubocop
